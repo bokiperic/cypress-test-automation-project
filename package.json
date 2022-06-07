@@ -1,0 +1,22 @@
+{
+  "name": "cypress-test-automation-project",
+  "version": "1.0.0",
+  "description": "Cypress Learning Test Automation Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bokiperic/cypress-test-automation-project.git"
+  },
+  "author": "Bojan Peric",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bokiperic/cypress-test-automation-project/issues"
+  },
+  "homepage": "https://github.com/bokiperic/cypress-test-automation-project#readme",
+  "devDependencies": {
+    "cypress": "^10.0.3"
+  }
+}
