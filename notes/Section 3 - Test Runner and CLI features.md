@@ -6,7 +6,7 @@ After this step Cypress will add some folders and example tests to your project.
 
 Official Cypress documentation with Getting Started Guide can be found at https://docs.cypress.io/guides/getting-started
 
-### Testing Frameworks 
+## Testing Frameworks 
 All of these functions come from **Bundled Tools** that Cypress bakes in:
   * ```describe``` and ```it``` come from **Mocha**
   * ```expect``` comes from **Chai**
