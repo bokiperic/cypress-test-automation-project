@@ -16,7 +16,7 @@ Cypress builds on these popular tools and frameworks that you *hopefully *alread
 ```describe``` can be understanded as **Test Suite**<br/>
 ```it``` can be understanded as **Test Case**
 
-### Running Cypress tests from the CLI
+## Running Cypress tests from the CLI
 
 To run cypress tests from CLI you'll need to prefix each command in order to properly locate the cypress executable. After these commands all tests in the *e2e* folder will be executed. You can use:<br/>
 
@@ -43,7 +43,7 @@ If you would like your tests to be run in specific browser (Electron is by defau
 ```cypress run --browser {chrome/firefox/edge}``` 
 
 
-### Cypress project Framework structure
+## Cypress project Framework structure
 
 Some folders are automaticaly created when you start with Cypress project.  <br/>
 
