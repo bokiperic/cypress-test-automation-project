@@ -22,3 +22,5 @@ To enable code completition for cypress, go to https://docs.cypress.io/guides/to
 In Cypress for the String you can use both single and double quotes.
 
 Cypress will wait automaticaly if there is any clue on the page that the page is loading. If there is none of the clues, we need to add ```cy.wait()``` command, which is the Cypress' way of *thread.sleep()*
+
+Scratched eye icon in the "timeline" section of the cypress run tests informs us there are some hidden elements on the screen. To enclude only visible elements in your tests just add ```:visible``` after class/id name in your css selector.
