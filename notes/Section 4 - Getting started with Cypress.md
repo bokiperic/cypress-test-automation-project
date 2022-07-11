@@ -12,6 +12,7 @@ Cypress supports **ONLY** *CSS selectors*. You can construct CSS selectors on ma
 * Also as ```tagname#idname``` when multiple elements have the same *id* (which idealy shouldn't be the situation) and you want/can to uniquely identify that element
 * As customized with any attribute - ```tagname[attribute=value]``` if you don't have neither id nor classname, so need to use some other attribute (*tagname* is optional, if there are more than 1 element with same attribute value). For example -> *input[type='search']*
 * Going from ```parent to child``` as *tagnames* with whitespace between them, for example -> *form input* if the input field/tag is the child of the form.
+* ```nth-child``` you can use when for example locating secong column in table like ```tr td:nth-child(2)```
 
 As a help you can download ```ChroPath``` plugin for CHrome and Firefox and install it. Then search for ```CSS selector``` in it's dropdown option to find locator OR you can type css selector you have just to check if it is found and unique. <br/>
 
