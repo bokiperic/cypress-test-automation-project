@@ -12,7 +12,7 @@ describe('My Sixth Test Suite', function()
         // If we would't have cy.get('div.mouse-hover-content').invoke('show'), we would use this to click (and popup won't be opened):
         // cy.contains('Top').click({force: true})
         cy.url().should('include', 'top')
-    })
+    })  
 
 
 })
