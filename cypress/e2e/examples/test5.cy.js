@@ -1,6 +1,5 @@
 /// <reference types="Cypress" />
 
-// Alerts, Popups, Child Windows (invoke, removeAttr functions)
 describe('My Fifth Test Suite', function()
 {
     it('My First Test Case', function() {
