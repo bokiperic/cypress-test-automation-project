@@ -4,7 +4,8 @@ This section will have 5 parts of a building Cypress framework. Those are:
 
 - Building Cypress Framework
   - [Part 1 - Understanding Fixtures and Custom commands](#part-1---understanding-fixtures-and-custom-commands)
-  - [Part 2 - Page Object Design and Test Parameterization](#-part-2---page-object-design-and-test-parameterization)
+  - [Part 2 - Page Object Design and Test Parameterization](#part-2---page-object-design-and-test-parameterization)
+  - [Part 3 - Configuration properties & Environmental variables](#part-3---configuration-properties--environmental-variables)
 
 Best practices in building Cypress Framework:
 - Setting up test Hooks
@@ -40,7 +41,7 @@ Custom Cypress comamnds you put inside the ```support``` folder by declaring the
 
 <br/>
 
-## <a name="part-2"></a> Part 2 - Page Object Design and Test Parameterization
+## <a name="part-2"></a>Part 2 - Page Object Design and Test Parameterization
 
 In JSON file with data you can also put in (key, value) pairing the array od values for a specific key. Iterate through those for example using the ```forEach()```.
 
@@ -77,4 +78,69 @@ import HomePage from "../pageObjects/homePage"
 const homePage = new HomePage()
 ```
 
+<br/>
 
+## <a name="part-3"></a>Part 3 - Configuration properties & Environmental variables
+
+Implementing global configuration changes to Cypress framework can be done inside the ```cypress.config.js``` file. But, if you would like to cofigure only for a specific test/file you can use command ```Cypress.config('configurationYouWishToChange', value)``` inside that test/file, for example:
+
+```
+Cypress.config('defaultCommadTimeout', 5000)
+```
+
+Good practice is to be consistent and have 1 global configuration, but in some specific cases you may need to configure something local, too.
+
+In order to take just part of the string you need (for example, you need 10000 from the string "$ 1000") you can use JS ```.split()``` method. This code will split the strig by using the white space as a string separation marker:
+
+```
+stringVariable.split(" ")
+```
+
+After split is done, the variable that contains new splited string will be ab array where every index will have one part of the split string. In our example case it will have string "$" at index 0, and "1000" at index 1. To remove any spaces that may have left after splitting, use the JS ```.trim()``` method:
+
+```
+splitStrigVariable[0].trim()
+```
+
+Converting a String number value in number in JS can be done as: ```Number(stringNumberValue)```.
+
+Cypress commands will wait to finish before the new one is started. JS commands won't, since JS is asychronous. These you must solve using the promices (```.then(function() {...})```).
+
+#### Environmental Variables in Cypress
+
+These are the variables that are globally declared for your framework so that they will have access to each and every test case. You can call them either ```environmental``` or ```global``` variables. One of the example are URLs. Basically all data that is specific for the environment. You'll usually have environments like ```QA```, ```DEV```, ```PROD```, etc.
+
+If you wish to change some global variables defined by Cypress you can do it in ```cypress.config.json``` file. YOu can findd these commands by opening the Cypress Dashboard (from where you can run tests on click) and going to tab ```Settings```. For variables that are nor Cypress variables you first need to put type a key and in that sub-JSON you can type variables. For example:
+
+```
+{
+  "defaultCommandTimeout": 8000, // cypress global variable
+  "env":                  // global variable for "env" environment
+  {
+    "url": "someurl.com"
+  }
+}
+```
+
+Then you call it in test like:
+```
+cy.visit(Cypress.env('url'))
+```
+
+Or if you have only base URL in global variable you can concatinate subdomains inside the specific tests:
+
+```
+cy.visit(Cypress.env('baseUrl') + "/sub-domain/")
+```
+
+You can also, for example, set the URL from terminal while executing the cypress run command. By running it from the terminal that URL will override the one from the cypress.config.js file! Example:
+
+```
+node_modules\.bin\cypress run --spec cypress/integration/examples/testName.cy.js --env url=https://someurl.com --headed
+```
+
+This comamnd will run only that specific spec and will use the URL we provided in that same command. We put ```--headed``` becausee Cypress by default will be run in headless mode and here we would like it to be run in headed mode.
+
+Cypress will automatically, out of the box, capture ```Screenshots``` on the test failure and inform you where that screenshot is located.
+
+Good practive in Cypress is to locate your POM files inside ```support``` folder. This is because if those are in the same folder as tour tests, Cypress will inform you regularly that those are not test cases. So inside the support folder create ```pageObjects``` folder (or some other name) and put your "Page" files there.

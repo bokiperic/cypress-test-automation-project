@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/bokiperic/cypress-test-automation-project#readme",
   "devDependencies": {
-    "cypress": "^10.3.0",
+    "cypress": "^10.4.0",
     "cypress-iframe": "^1.0.1"
   }
 }
