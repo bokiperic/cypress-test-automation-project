@@ -6,6 +6,7 @@ This section will have 5 parts of a building Cypress framework. Those are:
   - [Part 1 - Understanding Fixtures and Custom commands](#part-1---understanding-fixtures-and-custom-commands)
   - [Part 2 - Page Object Design and Test Parameterization](#part-2---page-object-design-and-test-parameterization)
   - [Part 3 - Configuration properties & Environmental variables](#part-3---configuration-properties--environmental-variables)
+  - [Part 4 - Dashboard features with Video recording & Screenshots](#part-4---dashboard-features-with-video-recording--screenshots)
 
 Best practices in building Cypress Framework:
 - Setting up test Hooks
@@ -41,7 +42,7 @@ Custom Cypress comamnds you put inside the ```support``` folder by declaring the
 
 <br/>
 
-## <a name="part-2"></a>Part 2 - Page Object Design and Test Parameterization
+## <a name="part-2">Part 2 - Page Object Design and Test Parameterization</a>
 
 In JSON file with data you can also put in (key, value) pairing the array od values for a specific key. Iterate through those for example using the ```forEach()```.
 
@@ -80,7 +81,7 @@ const homePage = new HomePage()
 
 <br/>
 
-## <a name="part-3"></a>Part 3 - Configuration properties & Environmental variables
+## <a name="part-3">Part 3 - Configuration properties & Environmental variables</a>
 
 Implementing global configuration changes to Cypress framework can be done inside the ```cypress.config.js``` file. But, if you would like to cofigure only for a specific test/file you can use command ```Cypress.config('configurationYouWishToChange', value)``` inside that test/file, for example:
 
@@ -144,3 +145,14 @@ This comamnd will run only that specific spec and will use the URL we provided i
 Cypress will automatically, out of the box, capture ```Screenshots``` on the test failure and inform you where that screenshot is located.
 
 Good practive in Cypress is to locate your POM files inside ```support``` folder. This is because if those are in the same folder as tour tests, Cypress will inform you regularly that those are not test cases. So inside the support folder create ```pageObjects``` folder (or some other name) and put your "Page" files there.
+
+<br/>
+
+## <a name="part-4">Part 4 - Dashboard features with Video recording & Screenshots</a>
+
+Official documetation about Cypress Dashboard can be found at https://docs.cypress.io/guides/dashboard/introduction. When you trigger your test cases you can see the results on Dashboard (Cloud Server), and in the same time you can see recording of each and every test as well as reporting, videos and screenshots. 
+
+You can see these runs locally in Cypress runner (```npx cypress open```) in it's ```Runs``` tab. When you start it for the first time, you'll need to login (best is to use **GitHub** or **Google** account you already have) annd after that you'll need to setup your project. Basicaly, for project setup just follow the flow, it's more like "Next, Next, Next" flow. After that your project will get it's own ```projectId``` and you'll get the command which you can run locally from your *cypress* folder in order for the tests to be displayed on Cypress Dashboard (```cypress run --record --key {projectKey}```). This *projectKey* is not the same value as the *projectId*.
+
+### Monitoring Test Execution through Cypress Dashboard
+
