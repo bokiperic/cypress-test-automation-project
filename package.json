@@ -4,7 +4,11 @@
   "description": "Cypress Learning Test Automation Project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx cypress run",
+    "headTest": "npm run test -- --headed",
+    "chromeTest": "npm run test -- --browser chrome",
+    "recordDashboardTest": "npm run test -- --record --key {CypressDashboardKeyValue} --reporter mochawesome",
+    "testUdemy": "npm run test -- --spec \"cypress/examples/test1.cy.js\""
   },
   "repository": {
     "type": "git",
