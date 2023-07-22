@@ -10,7 +10,7 @@ To get the **attribute (property) value** we'll use jQuerry method ```prop()```.
 
 <br/>
 
-(test8.cy.js)
+(framesDemo.cy.js)
 
 ## Handling Frames with Cypress
 
