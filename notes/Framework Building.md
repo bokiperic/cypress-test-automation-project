@@ -197,3 +197,154 @@ Now if we run in command line command ```npm run test``` the script for the "tes
 
 ## <a name="part-6">Part 6 - Cypress BDD Cucumber Framework integration to Mocha</a>
 
+Installation of the Cucumber plugin, with the instractions, can be found on: [https://github.com/badeball/cypress-cucumber-preprocessor](https://github.com/badeball/cypress-cucumber-preprocessor). By default Cypress doesn't support Cucumber related runs. You install it by:
+
+1. Running this command in your project's folder:
+
+```
+npm install @badeball/cypress-cucumber-preprocessor
+npm install --save-dev @cypress/browserify-preprocessor
+```
+
+2. After installation you need to register the newly installed plugin in the *cypress.config.js* file ```setupNodeEvents``` function. This function helps you to load all the plugins before you start running your tests. You eed to add these 2 lines of code inside and also you can move that function on top of your cypress.config.js file, above ```module.export``` line, so the code would look more clean, like this:
+
+```
+async function setupNodeEvents(on, config) {
+  // implement node event listeners here
+  await preprocessor.addCucumberPreprocessorPlugin(on, config);
+  on("file:preprocessor", browserify.default(config));
+  return config;
+}
+```
+and then just run in inside the *e2e* section:
+
+```
+e2e: {
+    setupNodeEvents,
+    specPattern: 'cypress/integration/examples/*.js'
+  }
+```
+Additionaly, you need to imporpt those 2 in that same file:
+
+```
+const preprocessor = require('@badeball/cypress-cucumber-preprocessor')
+const browserify = require('@badeball/cypress-cucumber-preprocessor/browserify')
+```
+3. Check that in ```package.json``` file you have both of these in *dependencies* section:
+
+```
+"dependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^18.0.1",
+  }
+```
+and **devDependencies**:
+
+```
+"devDependencies": {
+    "@cypress/browserify-preprocessor": "^3.0.2",
+    "cypress": "^10.10.0",
+  }
+```
+
+4. In order for Cypress to run the BDD Cucumber ```feature``` files, we'll forstly create a **BDD** folder, for example inside the *examples* folder (or inside the 'integration' folder which you can create instead of the 'examples' for the real-life project), and add that path to the *e2e* section of the ```cypress.config.js``` file:
+
+```
+e2e: {
+    setupNodeEvents,
+
+    // 'specPattern' for the Framework w/o BDD
+    // specPattern: 'cypress/e2e/examples/*.js'
+
+    // 'specPattern' for the Framework WITH BDD
+    specPattern: 'cypress/e2e/examples/BDD/*.feature'
+  },
+```
+
+To have syntacs highlighting for your feature files download a VS Code plugin ```Cucumber (Gherkin) Full Support```. Process of writting the tests would be:
+
+1. In **BDD** folder you create ```.feature``` file with scenario(s)
+2. Inside *BDD* folder create folder for writing the code that will connect with this feature file (in this framework example it is 'ecommerce' folder). Name of this folder needs to be the same as the ame of the feature file, since it will first try to find the code inn the folder of that name
+3. In that folder create JS file of any name and write step definitions for feature file inside it
+
+### Data driven testing with Cucumber
+
+Instead relying on Cypress fixtures you can also do it with Cucumber (data driven testing). Advice is to rely on Cypress and ot complicate too much, but here we'll also show this way, using the Cucumber. This is done in part of BDD code where we are testing filling the form (second eCommerce test). You can add data inside the feature file in nthe section where you will use it, like this:
+
+```
+Scenario: Filling the form to shop
+        Given I open Ecommerce page
+        When I fill the form details
+            |name | gender |
+            |bob  | male   |
+        Then Validate the form's behavior
+        And Select the Shop Page
+```
+And then update in the code with adding the *dataTable* argument inside the function but also inside the part where you are doing the assertion:
+
+```
+When('I fill the form details', function(dataTable) {
+    homePage.getEditBox().type(dataTable.rawTable[1][0])
+    homePage.getGender().select(dataTable.rawTable[1][1])
+})
+```
+
+If you would like to keep the fextures way of working with data, just create ```beforeEach.js``` file inside the folder where the code for step definitions is located and move the fixtures loading data code there, like this:
+
+```
+beforeEach( () => {
+    cy.fixture('userFormData').then(function(data) {
+        this.data=data
+    })
+});
+```
+
+###Tagging
+
+You can tag your tests, so you could run only the ones with the specific tag. You enter the tag above the sceario like this:
+
+```
+@Regression
+Scenario: Ecommerce products delivery
+    Given I open Ecommerce page
+    When I add items to the card
+    And Validate the total prices
+    Then Select the country, submit and verify that "Thak you" is displayed
+
+@Smoke
+Scenario: Filling the form to shop
+    Given I open Ecommerce page
+    When I fill the form details
+        |name | gender |
+        |bob  | male   |
+    Then Validate the form's behavior
+    And Select the Shop Page
+```
+
+Here ```@Regression``` and ```@Smoke``` are tags, and if you would like to run for example only scenarios that have ```@Regression``` tag in headed mode and inside the Chrome browser, you could do that using the command:
+
+```
+npx cypress run --env tags="@Regression" --headed --browser chrome
+```
+
+### Cucumber HTML Report
+
+To generate Cucumber Report two steps are required:
+1. To generate test results in the JSON format
+2. Cucumber will convert those results from JSON to HTML report
+
+You can check this also on [https://github.com/badeball/cypress-cucumber-preprocessor](https://github.com/badeball/cypress-cucumber-preprocessor), if you go to Documentatio, then select Reports section and follow the steps.
+
+ For the **Step 1** you need to download and install [cucumber-json-formatter](https://github.com/cucumber/json-formatter) ("copy to PATH" part means to copy it to the project main directory) and also enable JSON reports. TO enable JSON reports go to ```package.json``` and add this section (for example between "scripts" and "repository" sections):
+
+ ```
+ "cypress-cucumber-preprocessor": 
+  {
+    "json": {
+      "enabled": true,
+      "output": "folderLocation" - this property is optional
+    }
+  }
+ ```
+ The report is outputed as ```cucumber-report.json``` in the project directory, but can be connfigured through the ```json.output``` property.
+
+ For the **Step 2** you need to download plugin [Multiple Cucumber HTML Reporter](https://npmjs.com/package/multiple-cucumber-html-reporter). You also need to create one file and locate it inside the project main folder. The file can be found on the Multiple Cucumber HTML Reporter's page, just copy-paste the code to the newly created file. This file is a script that will do the convertion from JSON to HTML and generate the HTML report. In nthis framework it is the ```cucumber-html-report.js``` file. Now you only need to execute this file and it will automaticaly generate a HTML report for you. You can execute it usinng the *node* command: ```node cucumber-html-report.js```.

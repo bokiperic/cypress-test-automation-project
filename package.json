@@ -8,7 +8,16 @@
     "headTest": "npm run test -- --headed",
     "chromeTest": "npm run test -- --browser chrome",
     "recordDashboardTest": "npm run test -- --record --key {CypressDashboardKeyValue} --reporter mochawesome",
-    "testUdemy": "npm run test -- --spec \"cypress/examples/test1.cy.js\""
+    "testUdemy": "npm run test -- --spec \"cypress/e2e/examples/test1.cy.js\"",
+    "bddTest": "npm run test -- --spec \"cypress/e2e/examples/BDD/ecommerce.feature\" --headed --browser chrome",
+    "regression": "npm run test -- --env tags=\"@Regression\" --headed --browser chrome",
+    "smoke": "npm run test -- --env tags=\"@Smoke\" --headed --browser chrome"
+  },
+  "cypress-cucumber-preprocessor": {
+    "json": {
+      "enabled": true,
+      "output": "cypress/cucumberReports/results.json"
+    }
   },
   "repository": {
     "type": "git",
@@ -21,7 +30,12 @@
   },
   "homepage": "https://github.com/bokiperic/cypress-test-automation-project#readme",
   "devDependencies": {
+    "@cypress/browserify-preprocessor": "^3.0.2",
     "cypress": "^10.10.0",
-    "cypress-iframe": "^1.0.1"
+    "cypress-iframe": "^1.0.1",
+    "multiple-cucumber-html-reporter": "^3.4.0"
+  },
+  "dependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^18.0.1"
   }
 }
