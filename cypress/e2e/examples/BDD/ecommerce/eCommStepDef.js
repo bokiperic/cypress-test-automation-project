@@ -7,7 +7,7 @@ const productPage = new ProductPage()
 Given('I open Ecommerce page', () => {
     cy.visit(Cypress.env('baseUrl') + "/angularpractice/")
 })
-When('I add items to the card', () => {
+When('I add items to the card', function () { // if you use hooks (like 'beforeEach' for taking fixtures) Mocha doesn't support shorthand functions operator '() =>' so whereever you have that data pulled from it (like here 'data.something) you need to write 'function()' notation.
     homePage.getShopTab().click()
         this.data.productName.forEach(function(element) {
             cy.selectProduct(element)
@@ -15,12 +15,13 @@ When('I add items to the card', () => {
         productPage.checkOutButton().click()
 })
 When('Validate the total prices', () => {
+    var sum = 0
     cy.get('tr td:nth-child(4) strong').each(($el, index, $list) => {
         cy.log($el.text())
         var actualPrice = $el.text().split(". ")
         actualPrice = actualPrice[1].trim()
         cy.log(actualPrice)
-        sum = Number(sum) + Number(actualPrice)
+         sum = Number(sum) + Number(actualPrice)
     }).then(function() {
         cy.log(sum)
     })
@@ -50,7 +51,7 @@ When('I fill the form details', function(dataTable) {
     homePage.getEditBox().type(dataTable.rawTable[1][0])
     homePage.getGender().select(dataTable.rawTable[1][1])
 })
-Then('Validate the form\'s behavior', function() {
+Then('Validate the form\'s behavior', function(dataTable) {
     homePage.getTwoWayDataBiding().should('have.value', dataTable.rawTable[1][0])
     homePage.getEditBox().should('have.attr', 'minlength', '2')
     homePage.getEnterpreneur().should('be.disabled')

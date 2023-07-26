@@ -9,7 +9,7 @@ class HomePage {
     }
 
     getGender() {
-        return cy.get('select')
+        return cy.get('#exampleFormControlSelect1')
     }
 
     getEnterpreneur() {
